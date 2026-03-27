@@ -124,3 +124,23 @@ def test_remove_choice_by_invalid_id():
 
     with pytest.raises(Exception):
         question.remove_choice_by_id('invalid_id')
+
+# Testing with fixtures
+@pytest.fixture
+def question():
+    question = Question(title='q1')
+    question.add_choice('a', False)
+    question.add_choice('b', True)
+    return question
+
+def test_add_question_with_fixture(question):
+    question.add_choice('c', False)
+
+    assert len(question.choices) == 3
+
+def test_remove_choice_with_fixture(question):
+    choice1_id = question.choices[0].id
+    question.remove_choice_by_id(choice1_id)
+
+    assert len(question.choices) == 1
+    assert question.choices[0].text == 'b'
